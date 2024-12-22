@@ -18,7 +18,7 @@ jobs:
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       run: |
-        for file in outputs/2404/22*; do
+        for file in outputs/2404/20/*; do
           if [[ $file == *.png || $file == *.jpg || $file == *.jpeg || $file == *.gif ]]; then
             echo "Posting $file to Discord..."
             curl -X POST \

@@ -1,0 +1,29 @@
+name: Post Existing Images to Discord
+
+on:
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
+
+jobs:
+  post-existing-images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install cURL
+      run: sudo apt-get install -y curl
+
+    - name: Post all existing images to Discord
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      run: |
+        for file in outputs/2404/22*; do
+          if [[ $file == *.png || $file == *.jpg || $file == *.jpeg || $file == *.gif ]]; then
+            echo "Posting $file to Discord..."
+            curl -X POST \
+              -H "Content-Type: multipart/form-data" \
+              -F "file=@$file" \
+              $DISCORD_WEBHOOK
+          fi
+        done
